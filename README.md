@@ -5,13 +5,13 @@
 
 This POC demonstrates method for obtaining GPG private keys from `gpg-agent` memory under Windows.
 
-Normally this should be possible only in `10` minutes time frame (`--default-cache-ttl` value).
+Normally this should be possible only within `10 minutes` time frame (`--default-cache-ttl` value).
 
-Unfortunatelly `housekeeping()` function (which is responsible for cache cleanup) is executed only if you are [using GPG](#introduction) (there is no timer there).
+Unfortunately `housekeeping()` function (which is responsible for cache cleanup) is executed only if you are [using GPG](#introduction) (there is no timer there).
 
 This means that in normal GPG usecase like: `you sign some file then close GUI and do other task` you password is still in `gpg-agent` memory (even if ttl expired).
 
-Attacker, whose has access to your current session, can use this for stealing private key without knowing your passphrase.
+Attacker, who has access to your current session, can use this for stealing private key without knowing your passphrase.
 
 ![Gpg Reaper implementation](images/reaper.png)
 
@@ -50,7 +50,7 @@ pip install six==1.10.0
 
 1\. Install [Gpg4Win 3.0.3](https://files.gpg4win.org/gpg4win-3.0.3.exe)
 
-2\. Open command line and start agent with `2` seconds cache time:
+2\. Open command line and start agent with `2 seconds` cache time:
   ```
   cd c:\Program Files (x86)\GnuPG\bin
   taskkill /im gpg-agent.exe /F
@@ -93,7 +93,7 @@ pip install six==1.10.0
   [*] Restore bytes
   ```
 
-  As you can see we dump key. This is possible because we nop housekeeping function.
+  As you can see we dump key. This is possible because we nopped the housekeeping function.
 
 8\. Restore private key:
 
@@ -101,7 +101,7 @@ pip install six==1.10.0
   python gpg_reaper.py .\testme.txt
   ```
 
-  Private key is dumped to file:
+  Private key is dumped to the file:
 
   ```
   [+] Dump E057D86EE78A0EED070296C01BC8630ED9C841D0 - Adam Nowak <anowak@example.com>
@@ -117,17 +117,17 @@ By default agent caches your credentials.
 
 `--default-cache-ttl n` option set the time a cache entry is valid to n seconds.
 
-The default is `600` seconds. Each time a cache entry is accessed, the entry’s timer is reset.
+The default is `600` seconds. Each time a cache entry is accessed, its timer is reseted.
 
 Under Windows sign process looks like this:
 
 ![Sign Process](images/pksign.png)
 
-Crucial part here is [housekeeping()](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L194) function which is responsible for removing expired credentials from memory.
+Crucial part here is [housekeeping()](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L194) function which is responsible for removing expired credentials from the memory.
 
 But there is one problem here: this function is executed only in two places (inside [agent_put_cache](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L323) and [agent_get_cache](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L425)).
 
-This means that cached credentials are **NOT** removed from memory until some gpg-agent commands which uses `agent_put_cache` or `agent_get_cache` or `agent_flush_cache` are executed.
+This means that cached credentials are **NOT** removed from the memory until some gpg-agent commands which uses `agent_put_cache` or `agent_get_cache` or `agent_flush_cache` are executed.
 
 # Usage
 
