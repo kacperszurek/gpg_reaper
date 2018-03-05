@@ -23,10 +23,10 @@ Attacker, whose has access to your current session, can use this for stealing pr
 * [Post exploitation on machine with GPG](#post-exploitation-on-machine-with-gpg)
 * [Bypass private key export restriction](#bypass-private-key-export-restriction)
 * [Conclusion](#conclusion)
-* [Implementation](implementation)
+* [Implementation](#implementation)
 * [Supported versions](#supported-versions)
 * [FAQ](#faq)
-* [Attribution](#attribution )
+* [Attribution](#attribution)
 
 # Installation
 
@@ -48,7 +48,7 @@ pip install six==1.10.0
 
 # Test
 
-1\. Install [Gpg4Win 2.3.4](http://files.gpg4win.org/gpg4win-2.3.4.exe)
+1\. Install [Gpg4Win 3.0.3](https://files.gpg4win.org/gpg4win-3.0.3.exe)
 
 2\. Open command line and start agent with `2` seconds cache time:
   ```
@@ -125,7 +125,7 @@ Under Windows sign process looks like this:
 
 Crucial part here is [housekeeping()](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L194) function which is responsible for removing expired credentials from memory.
 
-But there is one problem here: this function is executed only in two places ([inside agent_put_cache ](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L323) and [agent_get_cache](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L425)).
+But there is one problem here: this function is executed only in two places (inside [agent_put_cache](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L323) and [agent_get_cache](https://github.com/gpg/gnupg/blob/20539ea5cad1903352e01ef95aecdda4d5cd999b/agent/cache.c#L425)).
 
 This means that cached credentials are **NOT** removed from memory until some gpg-agent commands which uses `agent_put_cache` or `agent_get_cache` or `agent_flush_cache` are executed.
 
