@@ -13,6 +13,8 @@ This means that in normal GPG usecase like: `you sign some file then close GUI a
 
 Attacker, who has access to your current session, can use this for stealing private key without knowing your passphrase.
 
+**NOTICE:GPG will change caching mechanism in version `2.2.6`. Check [commit](https://dev.gnupg.org/rGf060cb5c63923d6caec784f65f3bb0aadf52f795) and [issue](https://dev.gnupg.org/T3829)**.
+
 ![Gpg Reaper implementation](images/reaper.png)
 
 # Table of contents
